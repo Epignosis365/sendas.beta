@@ -1,0 +1,191 @@
+.bar-info-store {
+	border-bottom: 1px solid #e5e5e5;
+	background-color: #fbfbfb;
+	height: 75px;
+	overflow: hidden;
+}
+
+.Premium-store {
+	display: block;
+}
+
+.Premium-store img{
+	height: 70px;
+}
+
+
+.carousel {
+   
+    overflow: hidden;
+}
+.carousel .item {
+    -webkit-transition: opacity 1s;
+    -moz-transition: opacity 1s;
+    -ms-transition: opacity 1s;
+    -o-transition: opacity 1s;
+    transition: opacity 1s;
+}
+.carousel .active.left, .carousel .active.right {
+    left:0;
+    opacity:0;
+    z-index:2;
+}
+.carousel .next, .carousel .prev {
+    left:0;
+    opacity:1;
+    z-index:1;
+}
+/*
+.item:nth-child(1) {
+  background: darkred;
+}
+
+.item:nth-child(2) {
+  background: red;
+}
+
+.item:nth-child(3) {
+  background: orange;
+}
+*/
+
+.top-product-distaque {
+	height: 40px;	
+	font-size: 1.0em;
+	font-weight: 300;
+	color: #383838;
+	font-family: Ubuntu;
+	margin: 0px;
+	padding: 10px 25px 10px 5px;
+	letter-spacing: .1px;
+}
+
+.content-image-distaque {
+	height: 145px;
+	max-height: 90%;
+	overflow: hidden;
+	padding-right: 30px;
+}
+
+.content-image-distaque img{
+	max-height: 100%;
+	width: auto;
+	margin: 0px;
+}
+
+.photo img {
+	border: 1px solid #f1f1f1;
+}
+
+.titre-grp-store-2 {
+	font-size: 1.0em;
+	padding: 10px 0px 10px 5px;
+	margin: 0px;
+	letter-spacing: .1px;
+	background-color: #e5ca6f;
+	
+}
+
+.titre-grp-store-2 a {
+	color: #020202;
+	font-weight: 300;
+	font-family: Ubuntu;
+}
+
+.titre-grp-store-2 i {
+	font-size: 1.3em;
+	color: #dcc268;
+	padding-right: 5px;
+}
+
+
+.separateur-up-store-1 {
+    height: 55px;
+    background-image: url('../images/store-sep-0.png');
+    padding: 0px;
+}
+.separateur-up-store-2 {
+    height: 55px;
+    background-image: url('../images/store-sep-1.png');
+    padding: 0px;
+}
+.separateur-up-store-3 {
+    height: 55px;
+    background-image: url('../images/store-sep-2.png');
+    padding: 0px;
+}
+/*-------------------------------
+	 Carousel Control 
+--------------------------------*/
+
+.carousel {
+    margin-bottom: 0;
+   /* padding: 0 40px 30px 40px; */
+}
+/* The controlsy */
+.carousel-control {
+	left: 5px;
+    height: 40px;
+	width: 40px;
+    background: none repeat scroll 0 0 #222222;
+    border: 4px solid #FFFFFF;
+    border-radius: 23px 23px 23px 23px;
+    margin-top: 110px;
+}
+.carousel-control.right {
+	right: 12px;
+}
+/* The indicators */
+.carousel-indicators {
+	right: 50%;
+	top: auto;
+	bottom: -10px;
+	margin-right: -19px;
+}
+/* The colour of the indicators */
+.carousel-indicators li {
+	background: #cecece;
+}
+.carousel-indicators .active {
+background: #428bca;
+}
+
+.titre-grp-store-3 {
+	font-size: 1.2em;
+	padding: 10px 0px 5px 5px;
+	margin: 0px;
+	
+}
+
+.titre-grp-store-3 a {
+	color: #020202;
+	font-weight: 300;
+	font-family: Ubuntu;
+}
+
+.titre-grp-store-3 i {
+	font-size: 1.3em;
+	color: #dcc268;
+	padding-right: 5px;
+}
+
+h2.titre-grp {
+	font-size: 0.9em;
+	padding: 0px 0px 5px 5px;
+	margin: 0px;
+	letter-spacing: .1px;
+}
+
+.item-col-3 {
+	margin-top: 15px;
+}
+
+.item-col-3 .info {
+	background-color: #FFFFFF;
+	border-radius: 1px;
+	border: 1px solid #f1f1f1;
+}
+
+.hidden-sm {
+	color: #ed290b;
+}

@@ -1,0 +1,637 @@
+<style type="text/css">
+  #menu-top1 {
+    background-color: #ed1c24;
+    /*background-image: url('../images/sep-3.png');*/
+  }
+</style>
+<?php
+  $categoriy = $_GET['?catgory'];
+  $VTr = base64_decode($_GET['?VTr']);
+  //echo "::".$VTr;
+
+  $dataUpdate_SQL = 'SELECT * FROM `articles_annonces` WHERE `id_annonce` = ? ';
+  $dataUpdate_SQLstm = $bdd->prepare($dataUpdate_SQL);
+  $dataUpdate_SQLstm->execute(array($VTr)) or die(print_r($dataUpdate_SQLstm->errorInfo()));
+  $result_dataAll = $dataUpdate_SQLstm->fetch();
+  $count_dataAll  = $dataUpdate_SQLstm->rowCount();
+
+  $id_annonceur      = $result_dataAll['id_annonceur'];
+  $id_annonce        = $result_dataAll['id_annonce'];
+  $id_crypt          = $result_dataAll['id_crypt'];
+  $titleAnnonce      = $result_dataAll['titre_annonce'];
+  $categories        = $result_dataAll['categories'];
+  $adresse_annonceur = $result_dataAll['adresse_annonceur'];
+  $description       = $result_dataAll['description'];
+  $type_annonce      = $result_dataAll['type_annonce'];
+
+  $taille        = $result_dataAll['taille'];
+  $couleur       = $result_dataAll['couleur'];
+  $unite_piece   = $result_dataAll['unite_piece'];
+
+  $prix_marchandise  = $result_dataAll['prix_marchandise'];
+  $type_annonceur    = $result_dataAll['type_annonceur'];
+  $marque            = $result_dataAll['marque'];
+  $modele            = $result_dataAll['modele'];
+  $chambres          = $result_dataAll['chambres'];
+  $sallons           = $result_dataAll['sallons'];
+  $salleDeBains      = $result_dataAll['salleDeBains'];
+  $codePostal        = $result_dataAll['codePostal'];
+  $adress_marchanise = $result_dataAll['adress_marchanise'];
+  $numero_telephone  = $result_dataAll['numero_telephone'];
+  $photos_array      = $result_dataAll['photos_array'];
+  $date_annoncee     = $result_dataAll['date_annoncee'];
+  $time_stamp        = $result_dataAll['time_stamp'];
+
+  $array_PHOTOS = explode(',', $photos_array);
+  $photo_cover = array_shift(array_slice($array_PHOTOS, 0, 1));
+
+  if ($count_dataAll > 0) {
+?>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#change_category').click(function(){
+      if($('.menu_PC').is(':hidden')){
+        //alert('hiden');
+        $('.menu_PC').slideDown('2000');   }
+      else{
+        $('.menu_PC').slideUp('2000');   }
+    });
+  });
+</script>
+<script type="text/javascript">
+  window.onload = function(){
+        
+    //Check File API support
+    if(window.File && window.FileList && window.FileReader)
+    {
+        var filesInput = document.getElementById("files");
+        
+        filesInput.addEventListener("change", function(event) {
+            
+            var files = event.target.files; //FileList object
+            var output = document.getElementById("wrapper");
+            
+            for(var i = 0; i< files.length; i++)
+            {
+                var file = files[i];
+                
+                //Only pics
+                if(!file.type.match('image'))
+                  continue;
+                
+                var picReader = new FileReader();
+                
+                picReader.addEventListener("load",function(event){
+                    
+                    var picFile = event.target;
+                    
+                    var div = document.createElement("div");
+
+                    
+                    div.innerHTML = "<div class='box_2'><div class='imagePreview'><img class='img-responsive thumbnailMedia_' src='" + picFile.result + "'" + "title='" + picFile.name + "' /></div></div>";
+                    
+                    /*
+                    div.innerHTML = "<img class='thumbnailMedia' src='" + picFile.result + "'" +
+                            "title='" + picFile.name + "'/>";
+                    */
+                    
+                    output.insertBefore(div,null);            
+                
+                });
+                
+                 //Read the image
+                picReader.readAsDataURL(file);
+            }                               
+           
+        });
+    }
+    else
+    {
+        console.log("Your browser does not support File API");
+    }
+}
+    
+</script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script>
+
+
+<script type="text/javascript">
+  function SubmitFormDataAnnuler() {
+      $('#form_publierAnnonce')[0].reset();
+  }
+</script>
+<script type="text/javascript">
+  function SubmitFormDataFile() {
+    var titreAnnonce = $("#titreAnnonce").val();
+    var descriptionAnnonce = $("#descriptionAnnonce").val();
+    var prixProd = $('input[name="prixProd"]:checked').val();
+    var marqueProduit = $("#marqueProduit").val();
+    var villeVendeur = $("#villeVendeur").val();
+    var typeAnnonce = $('input[name="typeAnnonce"]:checked').val();
+    var TypdeVendeur = $('input[name="TypdeVendeur"]:checked').val();
+    var codePostal = $("#codePostal").val();
+    var adresseProduit = $("#adresseProduit").val();
+    var numeroTelephone = $("#numeroTelephone").val();
+    var adresseMail = $("#adresseMail").val();
+    var chambres = $("#chambres").val();
+    var salleDeBains = $("#salleDeBains").val();
+    var sallons = $("#sallons").val();
+    var categorie = $("#categorie").val();
+    var prixProduit = $("#prixProduit").val();
+    var modelProduit = $("#modelProduit").val();
+
+    var unites = $("#unites").val();
+    var couleur = $("#couleur").val();
+    var taille = $("#taille").val();
+
+    var id_secret = $("#id_secret").val();
+
+    var formData = new FormData(document.querySelector("form"));
+    var file = this.files[0];
+    //var form = new FormData();
+    formData.append('files', file);
+    formData.append('titreAnnonce', $('#titreAnnonce').val());
+    formData.append('descriptionAnnonce', $('#descriptionAnnonce').val());
+    formData.append('marqueProduit', $('#marqueProduit').val());
+    formData.append('villeVendeur', $('#villeVendeur').val());
+    //formData.append('typeAnnonce', $('#typeAnnonce').val());
+    //formData.append('TypdeVendeur',$('#TypdeVendeur').val());
+    formData.append('codePostal', $('#codePostal').val());
+    formData.append('adresseProduit', $('#adresseProduit').val());
+    formData.append('numeroTelephone', $('#numeroTelephone').val());
+    formData.append('adresseMail', $('#adresseMail').val());
+    formData.append('chambres', $('#chambres').val());
+    formData.append('salleDeBains', $('#salleDeBains').val());
+    formData.append('sallons', $('#sallons').val());
+    formData.append('categorie', $('#categorie').val());
+    formData.append('prixProduit', $('#prixProduit').val());
+    formData.append('modelProduit', $('#modelProduit').val());
+    formData.append('unites', $('#unites').val());
+    formData.append('couleur', $('#couleur').val());
+    formData.append('taille', $('#taille').val());
+    formData.append('id_secret', $('#id_secret').val());
+    $.ajax({
+        url: "app/model/str-update-annonce.php",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(result){
+          // do something
+          //alert(result);
+          $('#results_publierAnnonce').html(result);
+          $('#results_publierAnnonce_2').html(result);
+       }
+
+    });
+  }
+</script>
+
+<link rel="stylesheet" type="text/css" href="css/publier-annonce.css">
+<div class="container-fluid" style="padding: 0px;">
+     <a href="#"><div class="separateur-up-obects"></div></a>
+</div>
+<div class="container-fluid" style="background-color: #;">    
+
+    <div class="col-md-9 corps-ajouter">
+      <form id="form_publierAnnonce" name="form_publierAnnonce" method="post" enctype="multipart/form-data">
+        <div class="tab-content col-md-12" id="tab_geral">
+            <div id="results_publierAnnonce"></div>
+            <div class="tab-pane_ active" id="tab_a">
+                <h4><small> 1 </small> Détails de l'annonce <small class="pull-right">Mise  jour annonces</small></h4>
+                <div class="col-md-12" style="margin-bottom: 30px;">
+                  <h3 style="display: none;">
+                      <span>Catégorie : </span>
+                      <?php echo base64_decode($_GET['?catgory']).' > '.base64_decode($_GET['?sbt']); ?>
+                      <div class="input-group" style="display: none;">
+                          <span class="input-group-addon beautiful">
+                          </span>
+                          <input type="text" class="form-control" disabled="disabled" style="display: none;" id="categorie" value="<?php echo base64_decode($_GET['?catgory']).' > '.base64_decode($_GET['?sbt']); ?>">
+                      </div>
+                      <a href="#" id="change_category" style="color: #1275c8;">Choisir ou changer de catégorie</a>
+                  </h3>
+                  <?php #if(!isset($categoriy)){include_once'app/views/categoriy.php';} 
+                    //include_once'app/views/categoriy.php';
+
+                    if (base64_decode($_GET['?catgory']) == "Acheter et vendre") {
+                      # code...
+                      
+                    }
+                  ?>
+                  <div class="col-md-6" style="padding: 0px;">
+
+                    <fieldset>
+                      <div class="form-group">
+                            <div class="col-md-12">
+                                <label style="font-size: 11px;font-weight: 300;color: #575858;"><b>Le titre de votre annonce qui sera afficher</b>  (Prends soins qu'il soit claire et simple) </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon beautiful">
+                                    </span>
+                                    <input type="text" class="form-control" id="titreAnnonce" value="<?= $titleAnnonce ?>">
+                                    <input type="text" name="id_secret" id="id_secret" style="display: none;" value="<?= $VTr ?>">
+                                </div>
+                          </div>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <div class="form-group">
+                            <div class="col-md-12">
+                              <label style="font-size: 11px;font-weight: 300;color: #575858;margin-top: 10px;"><b>Description de l'annonce</b></label>
+                              <div class="input-controls-container">
+                                  <textarea class="form-control textarea-description" id="descriptionAnnonce"><?= $description ?></textarea>                                
+                              </div>
+                          </div>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <div class="form-group">
+                            <div class="col-md-12">
+                              <label style="font-size: 11px;font-weight: 300;color: #575858;margin-top: 10px;"><b>Prix / Unité ou pièce</b> (à donner, sur demande ou échange)</label>
+                               <div class="input-group">
+                                    <span class="input-group-addon beautiful">
+                                      <input type="radio" name="prixProd" value="prixChiffre" checked="checked" onclick="document.getElementById('prixProduit').removeAttribute('disabled')">                                     
+                                    </span>
+                                    <input type="text" class="form-control" id="prixProduit" style="width: 40%;" value="<?= $prix_marchandise ?>">
+                                    <select class="form-control selectpicker" id="unites" style="width: 60%;border-left: 0px;">
+                                      
+                                      <option value="pièce" <?php if($unite_piece=="pièce") echo "selected"; ?> >pièce</option>
+                                      <option value="ensemble" <?php if($unite_piece=="ensemble") echo "selected"; ?> >ensemble</option>
+                                    </select>
+                                </div>
+                                <div class="input-group" style="margin-left: 12px;">
+                                    <label class="not-active label-typeAnnonce" style="margin-right: 10px;">
+                                        <input type="radio" value="Gratuit" name="prixProd" onclick="document.getElementById('prixProduit').disabled = false; document.getElementById('prixProduit').disabled = true;"> Gratuit
+                                    </label>
+                                    <label class="not-active label-typeAnnonce" style="margin-right: 10px;">
+                                        <input type="radio" value="Gur demande" name="prixProd"> Sur demande
+                                    </label>
+                                    <label class="not-active label-typeAnnonce" style="margin-right: 10px;">
+                                        <input type="radio" value="Echange" name="prixProd"> Échange
+                                    </label>
+                                </div>
+                          </div>
+                      </div>
+                    </fieldset>
+                    <div class="col-md-12" style="padding: 0px;">
+                      <div class="col-md-6" style="padding: 0px;">
+                        <fieldset>
+                          <div class="form-group">
+                                <div class="col-md-12">
+                                    <label style="font-size: 11px;font-weight: 300;color: #575858;"><b>La marque</b></label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon beautiful">                                      
+                                        </span>
+                                        <input type="text" class="form-control" id="marqueProduit" value="<?= $marque ?>">
+                                    </div>
+                              </div>
+                          </div>
+                        </fieldset>
+                      </div>
+
+                      <div class="col-md-6" style="padding: 0px;">
+                        <fieldset>
+                          <div class="form-group">
+                                <div class="col-md-12">
+                                    <label style="font-size: 11px;font-weight: 300;color: #575858;"><b>Le model</b></label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon beautiful">                                      
+                                        </span>
+                                        <input type="text" class="form-control" id="modelProduit" value="<?= $modele ?>">
+                                    </div>
+                              </div>
+                          </div>
+                        </fieldset>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="col-md-6" style="padding: 0px;">
+                    <fieldset>
+                      <div class="form-group">
+                            <div class="col-md-12">
+                                <label style="font-size: 11px;font-weight: 300;color: #575858;"><b>Votre adresse ou simplement la ville.</b> Ceci donnera confiance à vos visiteurs  </label>
+                                <div class="input-group">
+                                    <span class="input-group-addon beautiful">                                      
+                                    </span>
+                                    <input type="text" class="form-control" id="villeVendeur" value="<?= $adresse_annonceur ?>">
+                                </div>
+                          </div>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <div class="form-group">
+                            <div class="col-md-12">
+                               <div class="input-group">
+                                  <label style="font-size: 11px;font-weight: 300;color: #575858;margin-top: 10px;"><b>Type d'annonce </b>(Seléctionner le type d'annonce)</label>
+                                  <div class="btn-group radio-group" style="margin-top: 10px;">
+                                     <label class="not-active label-typeAnnonce"> <input type="radio" value="Offre" name="typeAnnonce" <?php if($type_annonce=="Offre") echo "checked"; ?> > <b>Offre</b> - Vous offrez un objet à vendre </label>
+                                     <label class="not-active label-typeAnnonce"><input type="radio" value="Recherche" name="typeAnnonce" <?php if($type_annonce=="Recherche") echo "checked"; ?> > <b>Recherche</b> - Vous recherchez un objet  </label>
+                                  </div>
+                               </div>
+                          </div>
+                      </div>
+                  </fieldset>
+                  <fieldset>
+                      <div class="form-group">
+                            <div class="col-md-12">
+                              <label style="font-size: 11px;font-weight: 300;color: #575858;margin-top: 10px;"><b>À vendre par </b>(Seléctionner le type de vendeur)</label>
+                               <div class="input-group" style="margin-left: 20px;">
+                                  <div class="btn-group radio-group">
+                                     <label class="not-active label-typeAnnonce"> <input type="radio" value="Particulier" name="TypdeVendeur" checked="checked" <?php if($type_annonceur=="Particulier") echo "checked"; ?> > Particulier </label>
+                                     <br>
+                                     <label class="not-active label-typeAnnonce"><input type="radio" value="Entreprise" name="TypdeVendeur" <?php if($type_annonceur=="Entreprise") echo "checked"; ?> > Entreprise </label>
+                                  </div>
+                               </div>
+                          </div>
+                      </div>
+                  </fieldset>
+                  <div class="col-md-12" style="padding: 0px;margin-top: 37px;">
+                      <div class="col-md-6" style="padding: 0px;">
+                        <fieldset>
+                          <div class="form-group">
+                                <div class="col-md-12">
+                                    <label style="font-size: 11px;font-weight: 300;color: #575858;"><b>Couleur</b></label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon beautiful">                                      
+                                        </span>
+                                        <select class="form-control selectpicker" id="couleur">
+                                          <option <?php if($couleur=="Une couleur") echo "selected"; ?>>Une couleur</option>
+                                          <option <?php if($couleur=="Plusieurs") echo "selected"; ?>>Plusieurs</option>
+                                        </select>
+                                    </div>
+                              </div>
+                          </div>
+                        </fieldset>
+                      </div>
+
+                      <div class="col-md-6" style="padding: 0px;">
+                        <fieldset>
+                          <div class="form-group">
+                                <div class="col-md-12">
+                                    <label style="font-size: 11px;font-weight: 300;color: #575858;"><b>Taille</b></label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon beautiful">                                      
+                                        </span>
+                                        <select class="form-control selectpicker" id="taille">
+                                          <option <?php if($taille==">Une taille") echo "selected"; ?>>Une taille</option>
+                                          <option <?php if($taille=="Plusieurs") echo "selected"; ?>>Plusieurs</option>
+                                        </select>
+                                    </div>
+                              </div>
+                          </div>
+                        </fieldset>
+                      </div>
+                    </div>
+                  
+                  </div>
+                  
+                </div>
+
+            </div>
+
+            <div class="tab-pane_" id="tab_b" style="margin-top: 20px;">
+                <h4><small> 2 </small> Emplacement </h4>
+
+                <div class="col-md-12" style="padding: 0px;margin-bottom: 15px;">
+                  <div class="col-md-3" style="padding: 0px;">
+                    <fieldset>
+                        <div class="form-group">
+                              <div class="col-md-12">
+                                  <label style="font-size: 11px;font-weight: 300;color: #575858;"><b>Code postal</b></label>
+                                  <div class="input-group">
+                                      <span class="input-group-addon beautiful">
+                                          
+                                      </span>
+                                      <input type="text" class="form-control" id="codePostal" value="<?= $codePostal ?>">
+                                  </div>
+                                  <label style="font-size: 11px;font-weight: 300;color: #575858;">Votre code postal est requis pour permettre aux autres de trouver votre annonce</label>                              
+                            </div>
+                        </div>
+                    </fieldset>
+                  </div>
+
+                  <div class="col-md-9" style="padding: 0px;">
+                    <fieldset>
+                        <div class="form-group">
+                              <div class="col-md-12">
+                                  <label style="font-size: 11px;font-weight: 300;color: #575858;"><b>Adresse où se trouve le produit</b></label>
+                                  <div class="input-group">
+                                      <span class="input-group-addon beautiful">                                      
+                                      </span>
+                                      <input type="text" class="form-control" id="adresseProduit" value="<?= $adress_marchanise ?>">
+                                  </div>
+                                  <label style="font-size: 11px;font-weight: 300;color: #575858;">L’ajout d’une adresse peut contribuer à augmenter la visibilité de votre annonce. </label>
+                            </div>
+                        </div>
+                      </fieldset>
+                  </div>
+                </div>
+
+            </div>
+            <!-- MEDIAS -->
+            <div class="tab-pane_" id="tab_c">
+
+                <h4><small> 3 </small> Coordonnées </h4>
+                
+                <div class="col-md-12" style="padding: 0px;margin-bottom: 15px;">
+                  <div class="col-md-6" style="padding: 0px;">
+                    <fieldset>
+                        <div class="form-group">
+                              <div class="col-md-12">
+                                  <label style="font-size: 11px;font-weight: 300;color: #575858;"><b>Numéro de téléphone </b></label>
+                                  <div class="input-group">
+                                      <span class="input-group-addon beautiful">
+                                          
+                                      </span>
+                                      <input type="text" class="form-control" id="numeroTelephone" value="<?= $numero_telephone ?>">
+                                  </div>
+                                  <label style="font-size: 11px;font-weight: 300;color: #575858;">Votre numéro de téléphone apparaîtra dans votre annonce.</label>                              
+                            </div>
+                        </div>
+                      </fieldset>
+                  </div>
+
+                  <div class="col-md-6" style="padding: 0px;">
+                    <fieldset>
+                        <div class="form-group">
+                              <div class="col-md-12">
+                                  <label style="font-size: 11px;font-weight: 300;color: #575858;"><b>Adresse de courriel</b></label>
+                                  <div class="input-group">
+                                      <span class="input-group-addon beautiful">                                      
+                                      </span>
+                                      <input type="text" class="form-control" id="adresseMail" placeholder="<?= $result_check['mailAdr'] ?>" disabled="disabled">
+                                  </div>
+                                  <label style="font-size: 11px;font-weight: 300;color: #575858;">Votre adresse de courriel ne sera pas communiquée à des tiers.</label>
+                            </div>
+                        </div>
+                      </fieldset>
+                  </div>
+                </div>
+                
+            </div>
+
+            <div class="tab-pane_" id="tab_d">
+                <h4><small> 4 </small> Médias </h4>
+
+                <h3 style="color: #575858;margin-top: 10px;"><b>Ajoutez d'autres photos pour attirer l'attention<br> sur votre annonce</b></h3>
+                <label style="font-size: 11px;font-weight: 300;color: #575858;">Incluez des photos prises sous différents angles et montrant des détails particuliers.<br> Vous pouvez ajouter jusqu’à 12 photos, d’au moins 300px de haut ou de large<br> (nous recommendons au moins 1000px).</label><br>
+
+                <label style="font-size: 11px;font-weight: 300;color: #575858;"><b>Cliquer sur le bouton pour selectionner les photos.</b></label>
+                
+                <div class="wrapper" id="wrapper">
+                  <?php
+                  foreach ($array_PHOTOS as $key => $value) { ?>
+                   <div class="box col-md-3" style="max-width: 190px;">
+                    <div class="image-preview">
+                      <img class="img-responsive thumbnailMedia_" src="produitsImages/<?= $value ?>">
+                    </div>
+                  </div> <?php
+                  }
+                  ?>
+                  <!--
+                  <div class="box">
+                    <div class="js--image-preview"></div>
+                    <div class="upload-options">
+                      <label>
+                        <input type="file" class="image-upload" accept="image/*" />
+                      </label>
+                    </div>
+                  </div>
+                  -->
+
+                </div>
+            </div>
+              <div class="col-md-6" style="padding: 0px;">
+                <label style="font-size: 11px;font-weight: 300;color: #575858;"><b>Cliquer sur le bouton pour selectionner les photos.</b></label>
+                <br>
+                <label for="files" class="btn btn-primary">Selectionner les photos </label>
+                <input type="file" id="files" name="files[]" max="8" multiple="multiple" style="display: none;" />
+              </div>
+            <div class="col-md-12" style="padding: 0px; border-top: 1px solid #e5e5e5;margin-top: 15px;">
+              <div id="results_publierAnnonce_2"></div>
+              <div class="col-md-8" style="padding: 0px;">
+                <label style="font-size: 11px;font-weight: 300;color: #575858;">
+               En affichant cette annonce, vous acceptez nos <a href="#" style="color: #1275c8;">Conditions d’utilisation</a>, notre <a href="#" style="color: #1275c8;">Politique de confidentialité</a> et nos <a href="#" style="color: #1275c8;">Règles d’affichage</a>. Veuillez ne pas publier vos annonces en double. Utilisez plutôt les options de mise en vente pour améliorer votre visibilité.</b>
+                </label>                
+              </div>
+              <div class="col-md-12" style="padding: 0px;">
+                <button type="button" style="margin-left: 10px;" class="btn btn-success pull-right" id="envoyerData" name="envoyerData" onclick="SubmitFormDataFile();">Lancer l'annonce en ligne </button>
+
+                <button type="button" class="btn btn-default pull-right" id="envoyerData" name="envoyerData" onclick="SubmitFormDataAnnuler();">Annuler </button>
+              </div>
+            </div>
+        </div><!-- tab content -->
+      </form>
+    </div>
+    <div class="col-md-3 option-ajouter">
+      <?php include_once'app/views/box_publicite.php'; ?>
+    </div>
+
+</div><!-- end of container -->
+
+
+
+
+<script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script>
+<script >function initImageUpload(box) {
+  let uploadField = box.querySelector('.image-upload');
+
+  uploadField.addEventListener('change', getFile);
+
+  function getFile(e){
+    let file = e.currentTarget.files[0];
+    checkType(file);
+  }
+  
+  function previewImage(file){
+    let thumb = box.querySelector('.js--image-preview'),
+        reader = new FileReader();
+
+    reader.onload = function() {
+      thumb.style.backgroundImage = 'url(' + reader.result + ')';
+    }
+    reader.readAsDataURL(file);
+    thumb.className += ' js--no-default';
+  }
+
+  function checkType(file){
+    let imageType = /image.*/;
+    if (!file.type.match(imageType)) {
+      throw 'Datei ist kein Bild';
+    } else if (!file){
+      throw 'Kein Bild gewählt';
+    } else {
+      previewImage(file);
+    }
+  }
+  
+}
+
+// initialize box-scope
+var boxes = document.querySelectorAll('.box');
+
+for(let i = 0; i < boxes.length; i++) {if (window.CP.shouldStopExecution(1)){break;}
+  let box = boxes[i];
+  initDropEffect(box);
+  initImageUpload(box);
+}
+window.CP.exitedLoop(1);
+
+
+
+
+/// drop-effect
+function initDropEffect(box){
+  let area, drop, areaWidth, areaHeight, maxDistance, dropWidth, dropHeight, x, y;
+  
+  // get clickable area for drop effect
+  area = box.querySelector('.js--image-preview');
+  area.addEventListener('click', fireRipple);
+  
+  function fireRipple(e){
+    area = e.currentTarget
+    // create drop
+    if(!drop){
+      drop = document.createElement('span');
+      drop.className = 'drop';
+      this.appendChild(drop);
+    }
+    // reset animate class
+    drop.className = 'drop';
+    
+    // calculate dimensions of area (longest side)
+    areaWidth = getComputedStyle(this, null).getPropertyValue("width");
+    areaHeight = getComputedStyle(this, null).getPropertyValue("height");
+    maxDistance = Math.max(parseInt(areaWidth, 10), parseInt(areaHeight, 10));
+
+    // set drop dimensions to fill area
+    drop.style.width = maxDistance + 'px';
+    drop.style.height = maxDistance + 'px';
+    
+    // calculate dimensions of drop
+    dropWidth = getComputedStyle(this, null).getPropertyValue("width");
+    dropHeight = getComputedStyle(this, null).getPropertyValue("height");
+    
+    // calculate relative coordinates of click
+    // logic: click coordinates relative to page - parent's position relative to page - half of self height/width to make it controllable from the center
+    x = e.pageX - this.offsetLeft - (parseInt(dropWidth, 10)/2);
+    y = e.pageY - this.offsetTop - (parseInt(dropHeight, 10)/2) - 30;
+    
+    // position drop and animate
+    drop.style.top = y + 'px';
+    drop.style.left = x + 'px';
+    drop.className += ' animate';
+    e.stopPropagation();
+    
+  }
+}
+
+//# sourceURL=pen.js
+</script>
+
+<?php
+}else {
+  echo "<br>Rien à montrer.";
+}

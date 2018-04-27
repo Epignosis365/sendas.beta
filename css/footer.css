@@ -1,0 +1,123 @@
+  /*---------------------------------------
+     FOOTER              
+  -----------------------------------------*/
+
+  footer {
+    background: #02312d;  /* fallback for old browsers */
+    /*
+    background: -webkit-linear-gradient(to right, #434343, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+    /*background: linear-gradient(to right, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    position: relative;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  footer h2 {
+    color: #ffffff;
+    font-size: 1.3em;
+    font-family: ubuntu;
+    font-weight: 300;
+    text-transform: uppercase;
+  }
+
+  .box-footer-0 {
+    border: 0px solid #e5e5e5;
+    margin-right: 0px;
+  }
+
+  .content-img-footer-0 {
+    padding: 20px;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .content-img-footer-0 img {
+    max-width: 100px;
+  }
+
+  .footer-link {
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer-link li {
+    display: block;
+    list-style: none;
+    margin: 5px 10px 5px 0;
+    font-size: 0.9em;
+    margin-left: 10px;
+    font-family: ubuntu;
+    font-weight: 300;
+  }
+
+  footer p,
+  footer span,
+  .footer-link li a {
+    color: #d9d9d9;
+  }
+
+  .footer-thumb p {
+    font-size: 0.9em;
+    color: #d9d9d9;
+    font-family: ubuntu;
+    font-weight: 300;
+  }
+  .footer-bottom li a,
+
+  .footer-info p {
+    margin-right: 4em;
+  }
+
+  .footer-bottom {
+    /*rgba(255,255,255,0.1);*/
+    margin-top: 0em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    
+  }
+
+  .footer-bottom .phone-contact,
+  .footer-bottom .social-icon {
+    display: inline-block;
+    vertical-align: top;
+  }
+
+
+  .footer-bottom .phone-contact span {
+    font-weight: 300;
+    display: inline-block;
+    margin-left: 10px;
+  }
+
+
+  /*---------------------------------------
+     SOCIAL ICON              
+  -----------------------------------------*/
+
+  .social-icon {
+    position: relative;
+    padding: 0;
+    margin: 0;
+  }
+
+  .social-icon li {
+    display: inline-block;
+    list-style: none;
+  }
+
+  .social-icon li a {
+    border-radius: 100px;
+    color: #d9d9d9;
+    font-family: ubuntu;
+    font-size: 0.8em;
+    text-decoration: none;
+    position: relative;
+    margin: 5px 10px;
+    font-weight: 500;
+  }
+
+  .social-icon li a:hover {
+    color: #ce3232;
+  }
